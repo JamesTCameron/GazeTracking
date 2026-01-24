@@ -17,6 +17,12 @@ jobs:
       (github.event_name == 'pull_request_review_comment' && contains(github.event.comment.body, '@claude')) ||
       github.event_name == 'pull_request'
 
+    permissions:
+      id-token: write
+      contents: write
+      pull-requests: write
+      issues: write
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
