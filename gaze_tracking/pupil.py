@@ -13,6 +13,7 @@ class Pupil(object):
         self.threshold = threshold
         self.x = None
         self.y = None
+        self.diameter = None
 
         self.detect_iris(eye_frame)
 
@@ -50,5 +51,15 @@ class Pupil(object):
             moments = cv2.moments(contours[-2])
             self.x = int(moments['m10'] / moments['m00'])
             self.y = int(moments['m01'] / moments['m00'])
+
+            # Calculate diameter by fitting an ellipse to the contour
+            if len(contours[-2]) >= 5:
+                ellipse = cv2.fitEllipse(contours[-2])
+                # Average the major and minor axes for diameter
+                self.diameter = (ellipse[1][0] + ellipse[1][1]) / 2
+            else:
+                # Fallback: approximate diameter from contour area
+                area = cv2.contourArea(contours[-2])
+                self.diameter = 2 * np.sqrt(area / np.pi)
         except (IndexError, ZeroDivisionError):
             pass

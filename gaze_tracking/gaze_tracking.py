@@ -96,6 +96,16 @@ class GazeTracking(object):
             pupil_right = self.eye_right.pupil.y / (self.eye_right.center[1] * 2 - 10)
             return (pupil_left + pupil_right) / 2
 
+    def pupil_left_diameter(self):
+        """Returns the diameter of the left pupil in pixels"""
+        if self.pupils_located:
+            return self.eye_left.pupil.diameter
+
+    def pupil_right_diameter(self):
+        """Returns the diameter of the right pupil in pixels"""
+        if self.pupils_located:
+            return self.eye_right.pupil.diameter
+
     def annotated_frame(self):
         """Returns the main frame with pupils highlighted"""
         frame = self.frame.copy()
