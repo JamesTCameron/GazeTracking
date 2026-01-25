@@ -104,9 +104,12 @@ class GazeTracking(object):
             color = (0, 255, 0)
             x_left, y_left = self.pupil_left_coords()
             x_right, y_right = self.pupil_right_coords()
-            cv2.line(frame, (x_left - 5, y_left), (x_left + 5, y_left), color)
-            cv2.line(frame, (x_left, y_left - 5), (x_left, y_left + 5), color)
-            cv2.line(frame, (x_right - 5, y_right), (x_right + 5, y_right), color)
-            cv2.line(frame, (x_right, y_right - 5), (x_right, y_right + 5), color)
+
+            # Draw circles around pupils using calculated radius
+            radius_left = self.eye_left.pupil.radius if self.eye_left.pupil.radius else 5
+            radius_right = self.eye_right.pupil.radius if self.eye_right.pupil.radius else 5
+
+            cv2.circle(frame, (x_left, y_left), radius_left, color, 2)
+            cv2.circle(frame, (x_right, y_right), radius_right, color, 2)
 
         return frame
