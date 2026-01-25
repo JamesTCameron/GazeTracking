@@ -13,6 +13,7 @@ class Pupil(object):
         self.threshold = threshold
         self.x = None
         self.y = None
+        self.radius = None
 
         self.detect_iris(eye_frame)
 
@@ -36,7 +37,7 @@ class Pupil(object):
 
     def detect_iris(self, eye_frame):
         """Detects the iris and estimates the position of the iris by
-        calculating the centroid.
+        calculating the centroid and radius.
 
         Arguments:
             eye_frame (numpy.ndarray): Frame containing an eye and nothing else
@@ -50,5 +51,16 @@ class Pupil(object):
             moments = cv2.moments(contours[-2])
             self.x = int(moments['m10'] / moments['m00'])
             self.y = int(moments['m01'] / moments['m00'])
+
+            # Calculate radius from the iris contour
+            if len(contours[-2]) >= 5:
+                # Fit an ellipse to the contour and use the average of major/minor axes as radius
+                ellipse = cv2.fitEllipse(contours[-2])
+                # ellipse is ((center_x, center_y), (axis1, axis2), angle)
+                self.radius = int((ellipse[1][0] + ellipse[1][1]) / 4)  # Average of semi-axes
+            else:
+                # Fallback: approximate radius from area
+                area = cv2.contourArea(contours[-2])
+                self.radius = int(np.sqrt(area / np.pi))
         except (IndexError, ZeroDivisionError):
             pass

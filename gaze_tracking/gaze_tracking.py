@@ -97,16 +97,19 @@ class GazeTracking(object):
             return (pupil_left + pupil_right) / 2
 
     def annotated_frame(self):
-        """Returns the main frame with pupils highlighted"""
+        """Returns the main frame with pupils highlighted with circles"""
         frame = self.frame.copy()
 
         if self.pupils_located:
             color = (0, 255, 0)
             x_left, y_left = self.pupil_left_coords()
             x_right, y_right = self.pupil_right_coords()
-            cv2.line(frame, (x_left - 5, y_left), (x_left + 5, y_left), color)
-            cv2.line(frame, (x_left, y_left - 5), (x_left, y_left + 5), color)
-            cv2.line(frame, (x_right - 5, y_right), (x_right + 5, y_right), color)
-            cv2.line(frame, (x_right, y_right - 5), (x_right, y_right + 5), color)
+
+            # Draw circles around the pupils
+            left_radius = self.eye_left.pupil.radius if self.eye_left.pupil.radius else 5
+            right_radius = self.eye_right.pupil.radius if self.eye_right.pupil.radius else 5
+
+            cv2.circle(frame, (x_left, y_left), left_radius, color, 2)
+            cv2.circle(frame, (x_right, y_right), right_radius, color, 2)
 
         return frame
