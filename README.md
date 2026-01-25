@@ -5,7 +5,7 @@
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
 [![GitHub stars](https://img.shields.io/github/stars/JamesTCameron/GazeTracking.svg?style=social)](https://github.com/JamesTCameron/GazeTracking/stargazers)
 
-This is a Python (2 and 3) library that provides a **webcam-based eye tracking system**. It gives you the exact position of the pupils and the gaze direction, in real time.
+This is a Python (2 and 3) library that provides a **webcam-based eye tracking system**. It provides precise measurements of biometric data including pupil positions and vision vectors, in real time.
 
 [![Demo](https://i.imgur.com/WNqgQkO.gif)](https://youtu.be/YEZMk1P0-yw)
 
@@ -61,16 +61,15 @@ while True:
     gaze.refresh(frame)
 
     new_frame = gaze.annotated_frame()
-    text = ""
 
-    if gaze.is_right():
-        text = "Looking right"
-    elif gaze.is_left():
-        text = "Looking left"
-    elif gaze.is_center():
-        text = "Looking center"
+    # Get precise biometric measurements
+    left_pupil = gaze.pupil_left_coords()
+    right_pupil = gaze.pupil_right_coords()
+    horizontal = gaze.horizontal_ratio()
+    vertical = gaze.vertical_ratio()
 
-    cv2.putText(new_frame, text, (60, 60), cv2.FONT_HERSHEY_DUPLEX, 2, (255, 0, 0), 2)
+    cv2.putText(new_frame, f"Left: {left_pupil}", (10, 30), cv2.FONT_HERSHEY_DUPLEX, 0.7, (0, 255, 0), 1)
+    cv2.putText(new_frame, f"Right: {right_pupil}", (10, 60), cv2.FONT_HERSHEY_DUPLEX, 0.7, (0, 255, 0), 1)
     cv2.imshow("Demo", new_frame)
 
     if cv2.waitKey(1) == 27:
@@ -105,30 +104,6 @@ gaze.pupil_right_coords()
 
 Returns the coordinates (x,y) of the right pupil.
 
-### Looking to the left
-
-```python
-gaze.is_left()
-```
-
-Returns `True` if the user is looking to the left.
-
-### Looking to the right
-
-```python
-gaze.is_right()
-```
-
-Returns `True` if the user is looking to the right.
-
-### Looking at the center
-
-```python
-gaze.is_center()
-```
-
-Returns `True` if the user is looking at the center.
-
 ### Horizontal direction of the gaze
 
 ```python
@@ -144,14 +119,6 @@ ratio = gaze.vertical_ratio()
 ```
 
 Returns a number between 0.0 and 1.0 that indicates the vertical direction of the gaze. The extreme top is 0.0, the center is 0.5 and the extreme bottom is 1.0.
-
-### Blinking
-
-```python
-gaze.is_blinking()
-```
-
-Returns `True` if the user's eyes are closed.
 
 ### Webcam frame
 
