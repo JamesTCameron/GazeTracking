@@ -128,12 +128,44 @@ frame = gaze.annotated_frame()
 
 Returns the main frame with pupils highlighted.
 
+## 📚 Comprehensive Documentation
+
+We've created extensive documentation to help you get started and make the most of GazeTracking:
+
+### Getting Started
+- **[SETUP_GUIDE.md](SETUP_GUIDE.md)** - Detailed installation instructions and troubleshooting for all platforms
+- **[FAQ.md](FAQ.md)** - Frequently asked questions and answers
+- **[WIKI_HOME.md](WIKI_HOME.md)** - Complete documentation hub
+
+### Developer Resources
+- **[API_REFERENCE.md](API_REFERENCE.md)** - Complete API documentation with all methods, parameters, and examples
+- **[EXAMPLES.md](EXAMPLES.md)** - Practical code examples: interactive apps, gaming, accessibility, data collection
+- **[ALGORITHM_GUIDE.md](ALGORITHM_GUIDE.md)** - Visual algorithm explanations with diagrams and formulas
+- **[TECHNICAL_DOCUMENTATION.md](TECHNICAL_DOCUMENTATION.md)** - Deep technical analysis and research references
+
+### Contributing
+- **[CONTRIBUTING.md](CONTRIBUTING.md)** - Guidelines for contributing, development workflow, and improvement roadmap
+- **[WIKI.md](WIKI.md)** - Original comprehensive wiki with quick answers
+
+### Quick Links
+- [What model does GazeTracking use?](TECHNICAL_DOCUMENTATION.md#algorithms-and-models) - Classical CV + pre-trained Dlib models
+- [How accurate is it?](FAQ.md#q-how-accurate-is-gazetracking) - ±5-10° angular error
+- [Performance optimization tips](ALGORITHM_GUIDE.md#performance-analysis) - Frame skipping, resolution reduction, ROI tracking
+- [Use case examples](EXAMPLES.md) - Gaming, accessibility, data collection, and more
+
 ## You want to help?
 
-Your suggestions, bugs reports and pull requests are welcome and appreciated. You can also starring ⭐️ the project!
+Your suggestions, bug reports, and pull requests are welcome and appreciated! You can also star ⭐️ the project!
 
-If the detection of your pupils is not completely optimal, you can send me a video sample of you looking in different directions. I would use it to improve the algorithm.
+**Ways to contribute:**
+- Report bugs or request features via [GitHub Issues](https://github.com/JamesTCameron/GazeTracking/issues)
+- Submit pull requests (see [CONTRIBUTING.md](CONTRIBUTING.md))
+- Improve documentation
+- Share your use cases and examples
+- Help answer questions in [GitHub Discussions](https://github.com/JamesTCameron/GazeTracking/discussions)
+
+If the detection of your pupils is not completely optimal, you can send a video sample of you looking in different directions to help improve the algorithm.
 
 ## Licensing
 
-This project is released by Antoine Lamé under the terms of the MIT Open Source License. View LICENSE for more information.
+This project is released by Antoine Lamé under the terms of the MIT Open Source License. View [LICENSE](LICENSE) for more information.
