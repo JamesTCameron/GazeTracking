@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    container_name: gazetracking-backend
+    ports:
+      - "5000:5000"
+    devices:
+      - /dev/video1:/dev/video1
+    environment:
+      - FLASK_ENV=development
+    volumes:
+      - ./gaze_tracking:/app/gaze_tracking:ro
+    networks:
+      - gazetracking
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: gazetracking-frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - REACT_APP_API_URL=http://localhost:5000
+    depends_on:
+      - backend
+    networks:
+      - gazetracking
+
+networks:
+  gazetracking:
+    driver: bridge
