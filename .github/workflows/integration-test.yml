@@ -84,25 +84,28 @@ jobs:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
           prompt: |
-            You are performing integration test analysis for PR #${{ fromJson(steps.pr.outputs.result).number }}.
+            REPOSITORY: ${{ github.repository }}
+            PR NUMBER: ${{ fromJson(steps.pr.outputs.result).number }}
+            BASE BRANCH: ${{ fromJson(steps.pr.outputs.result).base }}
+            PR BRANCH: ${{ fromJson(steps.pr.outputs.result).ref }}
 
-            Your task:
-            1. Analyze the code changes in this PR by comparing with the base branch (${{ fromJson(steps.pr.outputs.result).base }})
-            2. Identify all modified/added functions, classes, and methods
-            3. Search the entire codebase to find all existing usages of the changed code
-            4. Analyze whether the changes could break existing functionality
-            5. Create or update integration tests to verify that existing usages still work correctly
-            6. Commit any new or updated test files directly to this branch
+            You are performing automated integration test analysis for this pull request.
 
-            Requirements:
-            - Focus on integration tests that verify interactions between components
-            - Test real-world usage scenarios found in the codebase
-            - If tests already exist, update them to cover the changes
-            - If no tests exist, create new test files following the project's testing patterns
-            - Include clear test names that describe what behavior is being verified
-            - Add assertions for both success cases and edge cases
+            CRITICAL INSTRUCTIONS:
+            1. Use git to compare this PR branch with the base branch to see what changed
+            2. Use Grep and Read tools to search the codebase for usages of changed functions/classes
+            3. Use Write tool to create test files (e.g., tests/integration_test_<component>.py)
+            4. Use Bash tool with git commands to add and commit the test files
+            5. Leave a comment on the PR summarizing what you tested
 
-            After analysis, commit your changes with a message like:
-            "Add integration tests for [changed components]"
+            STEP-BY-STEP PROCESS:
+            - Run: git diff ${{ fromJson(steps.pr.outputs.result).base }}...${{ fromJson(steps.pr.outputs.result).ref }}
+            - Identify changed functions, classes, methods
+            - Search codebase for usages with Grep
+            - Create integration test files that verify existing usages still work
+            - Commit with: git add tests/ && git commit -m "Add integration tests" && git push
+            - Comment on PR #${{ fromJson(steps.pr.outputs.result).number }} with summary
 
-            DO NOT create a pull request. Commit directly to the current branch.
+            You MUST create test files and commit them. Even if the changes seem small, create basic integration tests.
+          claude_args: |
+            --allowedTools Bash,Read,Write,Grep,Glob
