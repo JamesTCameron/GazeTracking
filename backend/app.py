@@ -20,7 +20,26 @@ CORS(app)  # Enable CORS for React frontend
 
 # Initialize gaze tracking
 gaze = GazeTracking()
-webcam = cv2.VideoCapture(0)
+
+# Try multiple methods to open the webcam
+webcam = None
+for attempt in [
+    (0, cv2.CAP_ANY, "index 0 with CAP_ANY"),
+    ('/dev/video0', cv2.CAP_V4L2, "/dev/video0 with CAP_V4L2"),
+    (1, cv2.CAP_ANY, "index 1 with CAP_ANY"),
+]:
+    if len(attempt) == 3:
+        device, backend, desc = attempt
+        webcam = cv2.VideoCapture(device, backend) if backend else cv2.VideoCapture(device)
+        if webcam.isOpened():
+            print(f"Successfully opened camera using {desc}")
+            break
+        else:
+            print(f"Failed to open camera using {desc}")
+
+if not webcam or not webcam.isOpened():
+    print("WARNING: Could not open any camera!")
+    webcam = cv2.VideoCapture(0)  # Fallback
 
 
 @app.route('/api/health', methods=['GET'])
@@ -140,5 +159,6 @@ def get_frame():
 
 
 if __name__ == '__main__':
-    # Run on localhost:5000
-    app.run(host='localhost', port=5000, debug=True, threaded=True)
+    # Run on 0.0.0.0 to accept connections from Docker network
+    # Debug mode disabled to prevent reloader from interfering with camera
+    app.run(host='0.0.0.0', port=5000, debug=False, threaded=True)
