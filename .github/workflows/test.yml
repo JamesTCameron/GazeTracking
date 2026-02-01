@@ -3,8 +3,7 @@ name: Run Tests
 on:
   push:
     branches:
-      - master
-      - main
+      - '**'  # Run on push to any branch
   pull_request:
     branches:
       - master
