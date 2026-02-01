@@ -62,13 +62,6 @@ class GazeTracking(object):
         self.frame = frame
         self._analyze()
 
-    def pupil_left_coords(self):
-        """Returns the coordinates of the left pupil"""
-        if self.pupils_located:
-            x = self.eye_left.origin[0] + self.eye_left.pupil.x
-            y = self.eye_left.origin[1] + self.eye_left.pupil.y
-            return (x, y)
-
     def pupil_right_coords(self):
         """Returns the coordinates of the right pupil"""
         if self.pupils_located:
@@ -82,9 +75,7 @@ class GazeTracking(object):
         the center is 0.5 and the extreme left is 1.0
         """
         if self.pupils_located:
-            pupil_left = self.eye_left.pupil.x / (self.eye_left.center[0] * 2 - 10)
-            pupil_right = self.eye_right.pupil.x / (self.eye_right.center[0] * 2 - 10)
-            return (pupil_left + pupil_right) / 2
+            pass
 
     def vertical_ratio(self):
         """Returns a number between 0.0 and 1.0 that indicates the
